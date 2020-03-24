@@ -8,7 +8,6 @@ import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
 @Component({
   selector: 'mat-n3-datepicker',
   templateUrl: './mat-datepicker.component.html',
-  styleUrls: ['./mat-datepicker.component.scss'],
   providers: [{
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => MatDatepickerComponent),
