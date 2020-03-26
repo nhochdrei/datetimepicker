@@ -37,4 +37,4 @@ export class MaterialModule { }
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
   ]
 })
-export class MatDatepickerCustomModule { }
+export class MatDatepickerN3Module { }

@@ -7,10 +7,9 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'mat-datepicker-app';
-  date = new FormControl(new Date());
+  time = new FormControl(new Date());
 
   dateChangedEvent(event) {
-    this.date.setValue(event);
+    this.time.setValue(event);
   }
 }

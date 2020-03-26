@@ -1,0 +1,11 @@
+<mat-form-field *ngIf="isDesktopDevice">
+    <mat-label>{{label}}</mat-label>
+    <input matInput [(ngModel)]="value" #input autocomplete="off" placeholder="__:__">
+    <mat-icon matSuffix (click)="openDialog()">access_time</mat-icon>
+</mat-form-field>
+
+<div>
+    <div *ngIf="email">
+        You signed up with: <p>{{email}}</p>
+    </div>
+</div>

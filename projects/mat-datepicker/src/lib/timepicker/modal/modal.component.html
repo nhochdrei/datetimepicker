@@ -1,0 +1,19 @@
+<div class="modal-content">
+
+  <div mat-dialog-content class="modal-upper noselect">
+
+    <drag-scroll #navHours scrollbar-hidden="true">
+      <div *ngFor="let hour of hours" class="list-element">{{hour}}</div>
+    </drag-scroll>
+
+    <drag-scroll scrollbar-hidden="true">
+      <div *ngFor="let minute of minutes" class="list-element">{{minute}}</div>
+    </drag-scroll>
+
+
+  </div>
+  <div mat-dialog-actions class="modal-bottom">
+    <button mat-button (click)="onNoClick()">ABRECHNEN</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="data.email" cdkFocusInitial>OK</button>
+  </div>
+</div>

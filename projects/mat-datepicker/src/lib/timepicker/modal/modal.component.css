@@ -1,0 +1,47 @@
+.modal-content {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal-upper {
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.modal-bottom {
+  width: 100%;
+  justify-content: space-around;
+}
+
+.time-list {
+  flex-direction: column;
+  width: 50%;
+}
+
+.list-element {
+  text-align: center;
+  padding: 15px;
+}
+
+.drag-scroll-container {
+  overflow-x: hidden !important;
+}
+
+drag-scroll {
+  height: 250px;
+  width: 100px;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+}

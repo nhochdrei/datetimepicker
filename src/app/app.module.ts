@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatDatepickerCustomModule } from 'projects/mat-datepicker/src/public-api';
+import { MatTimepickerN3Module } from 'projects/mat-datepicker/src/lib/timepicker/mat-timepicker.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -14,7 +14,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatDatepickerCustomModule
+    MatTimepickerN3Module
   ],
   providers: [],
   bootstrap: [AppComponent]
