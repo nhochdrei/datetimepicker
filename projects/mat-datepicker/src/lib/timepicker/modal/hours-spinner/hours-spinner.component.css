@@ -1,0 +1,8 @@
+.list-element {
+  text-align: center;
+  padding: 10px;
+}
+
+.selected-value {
+  font-weight: 600;
+}

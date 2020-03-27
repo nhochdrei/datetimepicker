@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DragScrollModule } from 'ngx-drag-scroll';
 import { MatTimepickerComponent } from './mat-timepicker.component';
+import { HoursSpinnerComponent } from './modal/hours-spinner/hours-spinner.component';
+import { MinutesSpinnerComponent } from './modal/minutes-spinner/minutes-spinner.component';
 import { ModalComponent } from './modal/modal.component';
 
 @NgModule({
@@ -35,7 +37,12 @@ export class MaterialModule { }
         DeviceDetectorModule.forRoot(),
         DragScrollModule
     ],
-    declarations: [MatTimepickerComponent, ModalComponent],
+    declarations: [
+        MatTimepickerComponent,
+        ModalComponent,
+        HoursSpinnerComponent,
+        MinutesSpinnerComponent
+    ],
     exports: [MatTimepickerComponent],
     bootstrap: [MatTimepickerComponent],
     providers: [],

@@ -1,13 +1,15 @@
 import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatInput } from '@angular/material/input';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
 import { ModalComponent } from './modal/modal.component';
 
 interface DialogData {
-  email: string;
+  hour: number;
+  minute: number;
 }
 
 @Component({
@@ -27,7 +29,7 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   @Output() timeChanged = new EventEmitter<Date>();
 
-  @ViewChild('input', { read: ViewContainerRef }) public input;
+  @ViewChild('timeInput', { read: ViewContainerRef }) public input;
   mask = [/[0-9]/, /[0-9]/, ':', /[0-9]/, /[0-9]/];
   maskedInputController;
 
@@ -44,25 +46,28 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     }
   }
 
-  email: string;
+  data: DialogData;
 
   constructor(
     private deviceService: DeviceDetectorService,
     public dialog: MatDialog) { }
 
-  openDialog(): void {
+  openDialog(timeInput: MatInput): void {
+    const time = timeInput.value;
     const dialogRef = this.dialog.open(ModalComponent, {
       width: '250px',
       height: '350px',
       data: {
-        hour: 10,
-        minute: 30
+        hour: +time.substring(0, time.indexOf(':')),
+        minute: +time.substring(time.indexOf(':') + 1, time.length)
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.email = result;
-      console.log(this.email);
+      this.data = result;
+      const hour = this.data.hour > 9 ? this.data.hour : '0' + this.data.hour;
+      const minute = this.data.minute > 9 ? this.data.minute : '0' + this.data.minute;
+      this.input.element.nativeElement.value = hour + ':' + minute;
     });
   }
 
