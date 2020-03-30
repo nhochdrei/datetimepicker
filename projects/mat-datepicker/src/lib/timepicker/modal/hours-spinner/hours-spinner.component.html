@@ -1,4 +1,4 @@
-<div>
+<div draggable="true" (dragover)="drag($event)" (drop)="resetDrag()">
   <div class="list-element">{{(value - 3 * step +maximum) % maximum}}</div>
   <div class="list-element">{{(value - 2 * step +maximum) % maximum}}</div>
   <div class="list-element">{{(value - step + maximum) % maximum}}</div>

@@ -22,6 +22,11 @@ export class HoursSpinnerComponent {
   @Input() step: number;
   maximum = 24;
 
+  private sumDeltaY = 0;
+  private lastDeltaY = 0;
+  private stepSize = 40;
+
+  firstTime = true;
 
   @HostListener('wheel', ['$event'])
   public onScroll(event) {
@@ -34,4 +39,42 @@ export class HoursSpinnerComponent {
       this.value = (this.value - this.step + this.maximum) % this.maximum;
     }
   }
+
+  resetDrag() {
+    console.log('event is reseting drag values');
+    this.sumDeltaY = 0;
+    this.lastDeltaY = 0;
+    this.firstTime = true;
+  }
+
+  drag(event) {
+    if (this.firstTime) {
+      this.lastDeltaY = event.screenY;
+      this.firstTime = false;
+    }
+
+    this.sumDeltaY += event.screenY - this.lastDeltaY;
+    this.lastDeltaY = event.screenY;
+
+    console.log('this.sumDeltaY', this.sumDeltaY, 'this.lastDeltaY', this.lastDeltaY);
+
+    if (this.sumDeltaY >= this.stepSize) {
+      console.log('prev');
+      this.sumDeltaY -= this.stepSize;
+      this.prevItem();
+    } else if (this.sumDeltaY <= -this.stepSize) {
+      console.log('next');
+      this.sumDeltaY += this.stepSize;
+      this.nextItem();
+    }
+  }
+
+  prevItem(): number {
+    return this.value = (this.value - (+this.step) + this.maximum) % this.maximum;
+  }
+
+  nextItem(): number {
+    return this.value = (this.value + (+this.step)) % this.maximum;
+  }
+
 }
