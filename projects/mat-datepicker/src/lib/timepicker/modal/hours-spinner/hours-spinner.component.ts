@@ -41,7 +41,6 @@ export class HoursSpinnerComponent {
   }
 
   resetDrag() {
-    console.log('event is reseting drag values');
     this.sumDeltaY = 0;
     this.lastDeltaY = 0;
     this.firstTime = true;
@@ -56,14 +55,11 @@ export class HoursSpinnerComponent {
     this.sumDeltaY += event.screenY - this.lastDeltaY;
     this.lastDeltaY = event.screenY;
 
-    console.log('this.sumDeltaY', this.sumDeltaY, 'this.lastDeltaY', this.lastDeltaY);
 
     if (this.sumDeltaY >= this.stepSize) {
-      console.log('prev');
       this.sumDeltaY -= this.stepSize;
       this.prevItem();
     } else if (this.sumDeltaY <= -this.stepSize) {
-      console.log('next');
       this.sumDeltaY += this.stepSize;
       this.nextItem();
     }
