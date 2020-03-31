@@ -24,8 +24,7 @@ export class HoursSpinnerComponent {
 
   private sumDeltaY = 0;
   private lastDeltaY = 0;
-  private stepSize = 40;
-
+  private stepSize = 45;
   firstTime = true;
 
   @HostListener('wheel', ['$event'])
@@ -54,7 +53,6 @@ export class HoursSpinnerComponent {
 
     this.sumDeltaY += event.screenY - this.lastDeltaY;
     this.lastDeltaY = event.screenY;
-
 
     if (this.sumDeltaY >= this.stepSize) {
       this.sumDeltaY -= this.stepSize;
