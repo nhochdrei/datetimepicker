@@ -22,6 +22,11 @@ export class MinutesSpinnerComponent {
   @Input() step: number;
   maximum = 60;
 
+  private sumDeltaY = 0;
+  private lastDeltaY = 0;
+  private stepSize = 45;
+  firstTime = true;
+
   getMinutesBefore(value, position, step, maximum): any {
     const minute = (value - position * step + maximum) % maximum;
     return minute < 0 ? '' : minute;
@@ -33,10 +38,42 @@ export class MinutesSpinnerComponent {
     event.stopPropagation();
 
     if (event.deltaY > 0) {
-      this.value = (this.value + (+this.step)) % this.maximum;
+      this.nextItem();
     } else if (event.deltaY < 0) {
-      this.value = (this.value - this.step + this.maximum) % this.maximum;
+      this.prevItem();
     }
+  }
+
+  resetDrag() {
+    this.sumDeltaY = 0;
+    this.lastDeltaY = 0;
+    this.firstTime = true;
+  }
+
+  drag(event) {
+    if (this.firstTime) {
+      this.lastDeltaY = event.screenY;
+      this.firstTime = false;
+    }
+
+    this.sumDeltaY += event.screenY - this.lastDeltaY;
+    this.lastDeltaY = event.screenY;
+
+    if (this.sumDeltaY >= this.stepSize) {
+      this.sumDeltaY -= this.stepSize;
+      this.prevItem();
+    } else if (this.sumDeltaY <= -this.stepSize) {
+      this.sumDeltaY += this.stepSize;
+      this.nextItem();
+    }
+  }
+
+  prevItem(): number {
+    return this.value = (this.value - (+this.step) + this.maximum) % this.maximum;
+  }
+
+  nextItem(): number {
+    return this.value = (this.value + (+this.step)) % this.maximum;
   }
 
 }
