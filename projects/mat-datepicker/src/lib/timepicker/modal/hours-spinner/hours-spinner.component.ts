@@ -16,7 +16,7 @@ export class HoursSpinnerComponent {
   }
 
   get value(): number {
-    return this._value;
+    return +this._value;
   }
 
   @Input() step: number;
@@ -24,7 +24,7 @@ export class HoursSpinnerComponent {
 
   private sumDeltaY = 0;
   private lastDeltaY = 0;
-  private stepSize = 45;
+  private stepSize = 40;
   firstTime = true;
 
   @HostListener('wheel', ['$event'])
@@ -39,7 +39,19 @@ export class HoursSpinnerComponent {
     }
   }
 
-  resetDrag() {
+  dragStart(event) {
+    const emptyImage = document.createElement('img');
+    // emptyImage.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+    emptyImage.setAttribute('style',
+      'position: absolute; display: block; top: 0; left: 0; width: 0; height: 0;');
+    event.dataTransfer.setDragImage(emptyImage, 0, 0);
+
+
+    // event.dataTransfer.effectAllowed = 'copyMove';
+    // event.target.style.cursor = 'grab';
+
+    event.target.style.cursor = 'grab';
+
     this.sumDeltaY = 0;
     this.lastDeltaY = 0;
     this.firstTime = true;
@@ -69,6 +81,11 @@ export class HoursSpinnerComponent {
 
   nextItem(): number {
     return this.value = (this.value + (+this.step)) % this.maximum;
+  }
+
+  elementClicked(event) {
+    this.value = event.target.innerHTML;
+    event.stopPropagation();
   }
 
 }

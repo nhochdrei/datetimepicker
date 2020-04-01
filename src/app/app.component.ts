@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -7,9 +7,8 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  time = new FormControl(new Date());
+  form = new FormGroup({
+    time: new FormControl(new Date())
+  });
 
-  dateChangedEvent(event) {
-    this.time.setValue(event);
-  }
 }

@@ -17,7 +17,6 @@ import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
 export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
 
   @Input() label: string;
-  @Input() placeholder: string;
 
   @Output() dateChanged = new EventEmitter<Date>();
 

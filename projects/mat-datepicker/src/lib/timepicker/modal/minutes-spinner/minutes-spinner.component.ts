@@ -16,7 +16,7 @@ export class MinutesSpinnerComponent {
   }
 
   get value(): number {
-    return this._value;
+    return +this._value;
   }
 
   @Input() step: number;
@@ -24,7 +24,7 @@ export class MinutesSpinnerComponent {
 
   private sumDeltaY = 0;
   private lastDeltaY = 0;
-  private stepSize = 45;
+  private stepSize = 40;
   firstTime = true;
 
   getMinutesBefore(value, position, step, maximum): any {
@@ -74,6 +74,11 @@ export class MinutesSpinnerComponent {
 
   nextItem(): number {
     return this.value = (this.value + (+this.step)) % this.maximum;
+  }
+
+  elementClicked(event) {
+    this.value = event.target.innerHTML;
+    event.stopPropagation();
   }
 
 }

@@ -1,9 +1,9 @@
 <div draggable="true" (dragover)="drag($event)" (dragstart)="resetDrag()">
-  <div class="list-element">{{getMinutesBefore(value, 3, step, maximum)}}</div>
-  <div class="list-element">{{getMinutesBefore(value, 2, step, maximum)}}</div>
-  <div class="list-element">{{getMinutesBefore(value, 1, step, maximum)}}</div>
+  <div class="list-element" (click)="elementClicked($event)">{{getMinutesBefore(value, 3, step, maximum)}}</div>
+  <div class="list-element" (click)="elementClicked($event)">{{getMinutesBefore(value, 2, step, maximum)}}</div>
+  <div class="list-element" (click)="elementClicked($event)">{{getMinutesBefore(value, 1, step, maximum)}}</div>
   <div class="list-element selected-value">{{value}}</div>
-  <div class="list-element">{{(value + 1 * step) % maximum}}</div>
-  <div class="list-element">{{(value + 2 * step) % maximum}}</div>
-  <div class="list-element">{{(value + 3 * step) % maximum}}</div>
+  <div class="list-element" (click)="elementClicked($event)">{{(value + 1 * step) % maximum}}</div>
+  <div class="list-element" (click)="elementClicked($event)">{{(value + 2 * step) % maximum}}</div>
+  <div class="list-element" (click)="elementClicked($event)">{{(value + 3 * step) % maximum}}</div>
 </div>

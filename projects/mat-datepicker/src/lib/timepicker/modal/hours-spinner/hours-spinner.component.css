@@ -6,3 +6,10 @@
 .selected-value {
   font-weight: 600;
 }
+
+.grabbable {
+  cursor: move;
+  cursor: grab;
+  cursor: -webkit-grab;
+  cursor: -moz-grab;
+}

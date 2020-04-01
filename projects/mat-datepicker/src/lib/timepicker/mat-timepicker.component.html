@@ -1,5 +1,28 @@
-<mat-form-field *ngIf="isDesktopDevice">
+<div *ngIf="isDesktopDevice">
+    <mat-form-field>
+        <mat-label>{{label}}</mat-label>
+        <input #maskInput matInput placeholder="__:__" [(ngModel)]="value" (change)="updateValue()" [disabled]="disabled"
+            autocomplete="off">
+        <mat-icon matSuffix [matMenuTriggerFor]="menu" #trigger="matMenuTrigger">access_time</mat-icon>
+    </mat-form-field>
+
+    <mat-menu #menu="matMenu" class="custom-menu-container" [hasBackdrop]="true" (click)="$event.stopPropagation()">
+        <div class="modal-content">
+            <div mat-dialog-content class="modal-upper noselect">
+                <lib-hours-spinner class="time-list" [value]="hour" step="1" (hourChanged)="hoursChanged($event)"></lib-hours-spinner>
+                <lib-minutes-spinner class="time-list" [value]="minute" step="15" (minuteChanged)="minutesChanged($event)">
+                </lib-minutes-spinner>
+            </div>
+
+            <div mat-dialog-actions class="modal-bottom">
+                <button mat-flat-button>{{cancelButton}}</button>
+                <button mat-flat-button color="primary" (click)="sendTime()">{{okButton}}</button>
+            </div>
+        </div>
+    </mat-menu>
+</div>
+
+<mat-form-field fxFlex="100%" *ngIf="!isDesktopDevice">
     <mat-label>{{label}}</mat-label>
-    <input #timeInput matInput [(ngModel)]="value" autocomplete="off" placeholder="__:__">
-    <mat-icon matSuffix (click)="openDialog(timeInput)">access_time</mat-icon>
+    <input matInput type="time" placeholder="__:__" [(ngModel)]="value" (change)="updateValue()" [disabled]="disabled">
 </mat-form-field>

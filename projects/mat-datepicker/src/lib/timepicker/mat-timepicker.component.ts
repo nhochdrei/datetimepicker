@@ -1,16 +1,8 @@
 import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { MatInput } from '@angular/material/input';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
-import { ModalComponent } from './modal/modal.component';
-
-interface DialogData {
-  hour: number;
-  minute: number;
-}
 
 @Component({
   selector: 'mat-n3-timepicker',
@@ -23,58 +15,50 @@ interface DialogData {
   }]
 })
 export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
-
-  @Input() label: string;
-  @Input() placeholder: string;
-
-  @Output() timeChanged = new EventEmitter<Date>();
-
-  @ViewChild('timeInput', { read: ViewContainerRef }) public input;
-  mask = [/[0-9]/, /[0-9]/, ':', /[0-9]/, /[0-9]/];
-  maskedInputController;
-
-  isDesktopDevice = false;
-
+  // tslint:disable-next-line: variable-name
   private _value = '';
   get value() { return this._value; }
   set value(v: string) {
-    if (v !== this._value) {
-      this._value = v;
-      const date = moment(v).toDate();
-      this.propagateChange(date);
-      this.timeChanged.emit(date);
-    }
+    this._value = v;
+    this.hoursChanged(v.substring(0, v.indexOf(':')).replace('_', ''));
+    this.minutesChanged(v.substring(v.indexOf(':') + 1, v.length).replace('_', ''));
   }
 
-  data: DialogData;
+  @Input() label: string;
+  @Input() disabled = false;
+  @Input() okButton = 'OK';
+  @Input() cancelButton = 'ABBRECHEN';
+
+  // tslint:disable-next-line: no-output-native
+  @Output() change = new EventEmitter<Date>();
+
+  @ViewChild('maskInput', { read: ViewContainerRef }) public maskInput: ViewContainerRef;
+  private mask = [/[0-9]/, /[0-9]/, ':', /[0-9]/, /[0-9]/];
+  private maskedInputController: any;
+
+  hour = 0;
+  minute = 0;
+
+  isDesktopDevice = false;
+
+  private propagateChange;
 
   constructor(
-    private deviceService: DeviceDetectorService,
-    public dialog: MatDialog) { }
+    private deviceService: DeviceDetectorService
+  ) { }
 
-  openDialog(timeInput: MatInput): void {
-    const time = timeInput.value;
-    const dialogRef = this.dialog.open(ModalComponent, {
-      width: '250px',
-      height: '350px',
-      data: {
-        hour: +time.substring(0, time.indexOf(':')),
-        minute: +time.substring(time.indexOf(':') + 1, time.length)
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.data = result;
-      const hour = this.data.hour > 9 ? this.data.hour : '0' + this.data.hour;
-      const minute = this.data.minute > 9 ? this.data.minute : '0' + this.data.minute;
-      this.input.element.nativeElement.value = hour + ':' + minute;
-    });
+  ngOnInit(): void {
+    this.isDesktopDevice = this.deviceService.isDesktop();
+    if (this.value !== undefined && this.value.length > 1) {
+      this.hour = +(this.value.substring(0, this.value.indexOf(':')));
+      this.minute = +(this.value.substring(this.value.indexOf(':') + 1, this.value.length));
+    }
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.maskedInputController = textMask.maskInput({
-        inputElement: this.input.element.nativeElement,
+        inputElement: this.maskInput.element.nativeElement,
         mask: this.mask
       });
     });
@@ -84,20 +68,33 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     this.maskedInputController.destroy();
   }
 
-  ngOnInit(): void {
-    this.isDesktopDevice = this.deviceService.isDesktop();
+  hoursChanged(hour: string) {
+    hour = hour !== undefined ? hour : '0';
+    this.hour = +hour;
   }
 
-  private propagateChange = (_: any) => { };
+  minutesChanged(minute: string) {
+    minute = minute !== undefined ? minute : '0';
+    this.minute = +minute;
+  }
+
+  sendTime() {
+    this.value = (this.hour.toString().length === 1 ? '0' + this.hour : this.hour)
+      + ':' + (this.minute.toString().length === 1 ? '0' + this.minute : this.minute);
+    this.updateValue();
+  }
 
   writeValue(obj: any): void {
-    this.value = moment(obj).format('DD.MM.YYYY');
+    this.value = moment(obj).format('HH:mm');
   }
+
   registerOnChange(fn: any): void {
     this.propagateChange = fn;
   }
+
   registerOnTouched(fn: any): void {
   }
+
   setDisabledState?(isDisabled: boolean): void {
     // throw new Error('Method not implemented.');
   }
@@ -107,6 +104,14 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     if (domElement.toElement.className.includes('mat-input-element')) {
       domElement.target.select();
     }
+  }
+
+  updateValue() {
+    const time = moment(this.value, 'HH:mm');
+    if (this.propagateChange) {
+      this.propagateChange(time.toDate());
+    }
+    this.change.emit(time.toDate());
   }
 
 }
