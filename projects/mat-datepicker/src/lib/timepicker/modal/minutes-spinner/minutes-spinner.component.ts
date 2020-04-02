@@ -1,11 +1,12 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lib-minutes-spinner',
   templateUrl: './minutes-spinner.component.html',
   styleUrls: ['./minutes-spinner.component.css']
 })
-export class MinutesSpinnerComponent {
+export class MinutesSpinnerComponent implements OnInit {
 
   @Output() minuteChanged: EventEmitter<number> = new EventEmitter();
 
@@ -13,6 +14,7 @@ export class MinutesSpinnerComponent {
   @Input() set value(val) {
     this.minuteChanged.emit(val);
     this._value = val;
+    // this.calculateClosestValue();
   }
 
   get value(): number {
@@ -25,7 +27,22 @@ export class MinutesSpinnerComponent {
   private sumDeltaY = 0;
   private lastDeltaY = 0;
   private stepSize = 40;
+  intervalCenter = 0;
   firstTime = true;
+
+  ngOnInit() {
+    const values = [];
+    for (let i = 0; i < 60; i++) {
+      if (i % this.step === 0) {
+        values.push(i);
+      }
+    }
+
+    this._value = values.reduce((prev, curr) => {
+      return (Math.abs(curr - this.value) < Math.abs(prev - this.value) ? curr : prev);
+    });
+
+  }
 
   getMinutesBefore(value, position, step, maximum): any {
     const minute = (value - position * step + maximum) % maximum;

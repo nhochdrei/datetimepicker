@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -40,6 +40,7 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   minute = 0;
 
   isDesktopDevice = false;
+  menuVisible = false;
 
   private propagateChange;
 
@@ -99,13 +100,6 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     // throw new Error('Method not implemented.');
   }
 
-  @HostListener('click', ['$event'])
-  onClick(domElement) {
-    if (domElement.toElement.className.includes('mat-input-element')) {
-      domElement.target.select();
-    }
-  }
-
   updateValue() {
     const time = moment(this.value, 'HH:mm');
     if (this.propagateChange) {
@@ -114,4 +108,13 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     this.change.emit(time.toDate());
   }
 
+  menuOpened() {
+    this.menuVisible = true;
+  }
+
+  menuClosed() {
+    setTimeout(() => {
+      this.menuVisible = false;
+    }, 1000);
+  }
 }
