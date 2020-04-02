@@ -1,4 +1,4 @@
-<div draggable="true" (dragover)="drag($event)" (dragstart)="resetDrag()">
+<div draggable="true" (dragover)="drag($event)" (dragstart)="dragStart($event)">
   <div class="list-element" (click)="elementClicked($event)">{{getMinutesBefore(value, 3, step, maximum)}}</div>
   <div class="list-element" (click)="elementClicked($event)">{{getMinutesBefore(value, 2, step, maximum)}}</div>
   <div class="list-element" (click)="elementClicked($event)">{{getMinutesBefore(value, 1, step, maximum)}}</div>

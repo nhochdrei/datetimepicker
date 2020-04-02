@@ -27,12 +27,11 @@ export class MinutesSpinnerComponent implements OnInit {
   private sumDeltaY = 0;
   private lastDeltaY = 0;
   private stepSize = 40;
-  intervalCenter = 0;
   firstTime = true;
 
   ngOnInit() {
     const values = [];
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < this.maximum; i++) {
       if (i % this.step === 0) {
         values.push(i);
       }
@@ -41,7 +40,6 @@ export class MinutesSpinnerComponent implements OnInit {
     this._value = values.reduce((prev, curr) => {
       return (Math.abs(curr - this.value) < Math.abs(prev - this.value) ? curr : prev);
     });
-
   }
 
   getMinutesBefore(value, position, step, maximum): any {
@@ -61,7 +59,12 @@ export class MinutesSpinnerComponent implements OnInit {
     }
   }
 
-  resetDrag() {
+  dragStart(event) {
+    const emptyImage = document.createElement('img');
+    emptyImage.setAttribute('style',
+      'position: absolute; display: block; top: 0; left: 0; width: 0; height: 0;');
+    event.dataTransfer.setDragImage(emptyImage, 0, 0);
+
     this.sumDeltaY = 0;
     this.lastDeltaY = 0;
     this.firstTime = true;

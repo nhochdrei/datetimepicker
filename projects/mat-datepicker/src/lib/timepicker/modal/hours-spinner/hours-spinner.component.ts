@@ -41,16 +41,9 @@ export class HoursSpinnerComponent {
 
   dragStart(event) {
     const emptyImage = document.createElement('img');
-    // emptyImage.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     emptyImage.setAttribute('style',
       'position: absolute; display: block; top: 0; left: 0; width: 0; height: 0;');
     event.dataTransfer.setDragImage(emptyImage, 0, 0);
-
-
-    // event.dataTransfer.effectAllowed = 'copyMove';
-    // event.target.style.cursor = 'grab';
-
-    event.target.style.cursor = 'grab';
 
     this.sumDeltaY = 0;
     this.lastDeltaY = 0;
