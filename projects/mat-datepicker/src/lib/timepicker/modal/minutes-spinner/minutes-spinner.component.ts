@@ -12,8 +12,8 @@ export class MinutesSpinnerComponent implements OnInit {
 
   _value: number;
   @Input() set value(val) {
-    this.minuteChanged.emit(val);
     this._value = val;
+    this.minuteChanged.emit(val);
     // this.calculateClosestValue();
   }
 

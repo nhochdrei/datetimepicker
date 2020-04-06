@@ -18,7 +18,7 @@ import { MatDatepickerComponent } from './mat-datepicker.component';
     MatIconModule
   ]
 })
-export class MaterialModule { }
+class MaterialModule { }
 
 @NgModule({
   imports: [

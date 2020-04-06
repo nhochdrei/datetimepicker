@@ -1,16 +1,18 @@
 <div *ngIf="isDesktopDevice">
     <mat-form-field>
         <mat-label>{{label}}</mat-label>
-        <input #maskInput matInput placeholder="__:__" [(ngModel)]="value" (change)="updateValue()" [disabled]="disabled"
-            autocomplete="off">
-        <mat-icon matSuffix [matMenuTriggerFor]="menu" #trigger="matMenuTrigger" (menuOpened)="menuOpened()" (menuClosed)="menuClosed()">access_time</mat-icon>
+        <input #maskInput matInput placeholder="__:__" (input)="updateValue()" [disabled]="disabled" autocomplete="off"
+            (click)="maskInputClicked()" (keydown.arrowup)="onArrowPressed($event, true)"
+            (keydown.arrowdown)="onArrowPressed($event, false)">
+        <mat-icon matSuffix [matMenuTriggerFor]="menu" #trigger="matMenuTrigger" (menuOpened)="menuOpened()" (menuClosed)="menuClosed()">
+            access_time</mat-icon>
     </mat-form-field>
 
     <mat-menu #menu="matMenu" class="custom-menu-container" [hasBackdrop]="true" (click)="$event.stopPropagation()">
         <div class="modal-content">
-            <div mat-dialog-content class="modal-upper noselect">
-                <lib-hours-spinner class="time-list" [value]="hour" step="1" (hourChanged)="hoursChanged($event)"></lib-hours-spinner>
-                <lib-minutes-spinner *ngIf="menuVisible" class="time-list" [value]="minute" step="15" (minuteChanged)="minutesChanged($event)">
+            <div mat-dialog-content class="modal-upper noselect" *ngIf="menuVisible">
+                <lib-hours-spinner class="time-list" [(value)]="hour" min="0" max="23" step="1"></lib-hours-spinner>
+                <lib-minutes-spinner class="time-list" [(value)]="minute" min="0" max="59" step="15">
                 </lib-minutes-spinner>
             </div>
 

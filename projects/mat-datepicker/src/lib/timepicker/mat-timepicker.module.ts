@@ -17,7 +17,13 @@ import { MinutesSpinnerComponent } from './modal/minutes-spinner/minutes-spinner
 
 
 @NgModule({
-    exports: [
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        DeviceDetectorModule.forRoot(),
+        DragScrollModule,
+
         FormsModule,
         MatInputModule,
         MatButtonModule,
@@ -26,18 +32,6 @@ import { MinutesSpinnerComponent } from './modal/minutes-spinner/minutes-spinner
         MatIconModule,
         MatListModule,
         MatMenuModule
-    ]
-})
-export class MaterialModule { }
-
-@NgModule({
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        MaterialModule,
-        ReactiveFormsModule,
-        DeviceDetectorModule.forRoot(),
-        DragScrollModule
     ],
     declarations: [
         MatTimepickerComponent,

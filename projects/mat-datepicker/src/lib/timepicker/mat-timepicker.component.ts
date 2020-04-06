@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -15,15 +15,6 @@ import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
   }]
 })
 export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor {
-  // tslint:disable-next-line: variable-name
-  private _value = '';
-  get value() { return this._value; }
-  set value(v: string) {
-    this._value = v;
-    this.hoursChanged(v.substring(0, v.indexOf(':')).replace('_', ''));
-    this.minutesChanged(v.substring(v.indexOf(':') + 1, v.length).replace('_', ''));
-  }
-
   @Input() label: string;
   @Input() disabled = false;
   @Input() okButton = 'OK';
@@ -32,17 +23,36 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   // tslint:disable-next-line: no-output-native
   @Output() change = new EventEmitter<Date>();
 
+  // tslint:disable-next-line: variable-name
+  private _value = '';
+  get value() { return this._value; }
+  set value(v: string) {
+    this.updateState(v);
+    if (this.maskInput) {
+      this.maskInput.element.nativeElement.value = v;
+    }
+  }
+
+  private _hour = 0;
+  get hour() { return this._hour; }
+  set hour(h: number) {
+    this._hour = h;
+  }
+
+  private _minute = 0;
+  get minute() { return this._minute; }
+  set minute(m: number) {
+    this._minute = m;
+  }
+
   @ViewChild('maskInput', { read: ViewContainerRef }) public maskInput: ViewContainerRef;
   private mask = [/[0-9]/, /[0-9]/, ':', /[0-9]/, /[0-9]/];
   private maskedInputController: any;
 
-  hour = 0;
-  minute = 0;
+  private propagateChange;
 
   isDesktopDevice = false;
   menuVisible = false;
-
-  private propagateChange;
 
   constructor(
     private deviceService: DeviceDetectorService
@@ -58,6 +68,7 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   ngAfterViewInit(): void {
     setTimeout(() => {
+      this.maskInput.element.nativeElement.value = this.value;
       this.maskedInputController = textMask.maskInput({
         inputElement: this.maskInput.element.nativeElement,
         mask: this.mask
@@ -69,22 +80,80 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     this.maskedInputController.destroy();
   }
 
-  hoursChanged(hour: string) {
-    hour = hour !== undefined ? hour : '0';
-    this.hour = +hour;
-  }
-
-  minutesChanged(minute: string) {
-    minute = minute !== undefined ? minute : '0';
-    this.minute = +minute;
-  }
-
   sendTime() {
+    this.hour = this._hour;
+    this.minute = this._minute;
     this.value = (this.hour.toString().length === 1 ? '0' + this.hour : this.hour)
       + ':' + (this.minute.toString().length === 1 ? '0' + this.minute : this.minute);
     this.updateValue();
   }
 
+  updateValue() {
+    this.updateState(this.maskInput.element.nativeElement.value);
+    const time = moment(this.value, 'HH:mm');
+    if (this.propagateChange) {
+      this.propagateChange(time.toDate());
+    }
+    this.change.emit(time.toDate());
+  }
+
+  updateState(v: string) {
+    this._value = v;
+    this._hour = +v.substring(0, v.indexOf(':')).replace('_', '');
+    this._minute = +v.substring(v.indexOf(':') + 1, v.length).replace('_', '');
+  }
+
+  maskInputClicked() {
+    const input = this.maskInput.element.nativeElement;
+    const text: string = input.value;
+
+    if (text.indexOf(':') < input.selectionStart) {
+      input.setSelectionRange(text.indexOf(':') + 1, text.length);
+    } else {
+      input.setSelectionRange(0, text.indexOf(':'));
+    }
+  }
+
+  @HostListener('wheel', ['$event'])
+  public onScroll(event) {
+    const input = this.maskInput.element.nativeElement;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+
+    const step = event.deltaY > 0 ? 1 : -1;
+    const isHours = input.value.indexOf(':') > input.selectionStart;
+
+    if (isHours) {
+      this.hour = ((this.hour + step) + 24) % 24;
+    } else {
+      this.minute = ((this.minute + step) + 60) % 60;
+    }
+
+    this.sendTime();
+    input.setSelectionRange(start, end);
+  }
+
+  onArrowPressed(event, isArrowUp: boolean) {
+    event.preventDefault();
+
+    const input = this.maskInput.element.nativeElement;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+
+    const step = isArrowUp ? 1 : -1;
+    const isHours = input.value.indexOf(':') > input.selectionStart;
+
+    if (isHours) {
+      this.hour = ((this.hour + step) + 24) % 24;
+    } else {
+      this.minute = ((this.minute + step) + 60) % 60;
+    }
+
+    this.sendTime();
+    input.setSelectionRange(start, end);
+  }
+
+  // Control Value Accessor Methods
   writeValue(obj: any): void {
     this.value = moment(obj).format('HH:mm');
   }
@@ -100,14 +169,7 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     // throw new Error('Method not implemented.');
   }
 
-  updateValue() {
-    const time = moment(this.value, 'HH:mm');
-    if (this.propagateChange) {
-      this.propagateChange(time.toDate());
-    }
-    this.change.emit(time.toDate());
-  }
-
+  // Menu Open-Close Methods
   menuOpened() {
     this.menuVisible = true;
   }
