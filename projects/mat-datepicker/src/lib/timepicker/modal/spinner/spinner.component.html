@@ -1,0 +1,3 @@
+<div class="time-list" draggable="true" (dragover)="drag($event)" (dragstart)="dragStart($event)" (scroll)="onScroll($event)">
+  <div *ngFor="let d of [-3,-2,-1,0,1,2,3]" class="element" [class.selected]="d==0" (click)="clicked(generateValue(d), $event)" >{{generateValue(d)}}</div>
+</div>

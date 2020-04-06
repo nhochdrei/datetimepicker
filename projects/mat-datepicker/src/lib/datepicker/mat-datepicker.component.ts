@@ -31,7 +31,7 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   set value(v: string) {
     if (v !== this._value) {
       this._value = v;
-      const date = moment(v).toDate();
+      const date = moment(v).toDate(); // todo format berücksichtigen
       this.propagateChange(date);
       this.dateChanged.emit(date);
     }

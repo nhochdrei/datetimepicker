@@ -11,9 +11,8 @@
     <mat-menu #menu="matMenu" class="custom-menu-container" [hasBackdrop]="true" (click)="$event.stopPropagation()">
         <div class="modal-content">
             <div mat-dialog-content class="modal-upper noselect" *ngIf="menuVisible">
-                <lib-hours-spinner class="time-list" [(value)]="hour" min="0" max="23" step="1"></lib-hours-spinner>
-                <lib-minutes-spinner class="time-list" [(value)]="minute" min="0" max="59" step="15">
-                </lib-minutes-spinner>
+                <lib-spinner class="spinners" [(value)]="hour" min="0" max="24" step="1"></lib-spinner>
+                <lib-spinner class="spinners" [(value)]="minute" min="0" max="60" step="15"></lib-spinner>
             </div>
 
             <div mat-dialog-actions class="modal-bottom">

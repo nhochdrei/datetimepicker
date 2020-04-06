@@ -37,12 +37,14 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   get hour() { return this._hour; }
   set hour(h: number) {
     this._hour = h;
+    this.sendTime();
   }
 
   private _minute = 0;
   get minute() { return this._minute; }
   set minute(m: number) {
     this._minute = m;
+    this.sendTime();
   }
 
   @ViewChild('maskInput', { read: ViewContainerRef }) public maskInput: ViewContainerRef;
@@ -60,7 +62,7 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   ngOnInit(): void {
     this.isDesktopDevice = this.deviceService.isDesktop();
-    if (this.value !== undefined && this.value.length > 1) {
+    if (this.value !== undefined && this.value.length > 1) { // todo prüfen ob update state reicht
       this.hour = +(this.value.substring(0, this.value.indexOf(':')));
       this.minute = +(this.value.substring(this.value.indexOf(':') + 1, this.value.length));
     }
@@ -81,10 +83,10 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   sendTime() {
-    this.hour = this._hour;
-    this.minute = this._minute;
-    this.value = (this.hour.toString().length === 1 ? '0' + this.hour : this.hour)
-      + ':' + (this.minute.toString().length === 1 ? '0' + this.minute : this.minute);
+    // this.hour = this._hour;
+    // this.minute = this._minute;
+    this.value = (this._hour.toString().length === 1 ? '0' + this._hour : this._hour)
+      + ':' + (this._minute.toString().length === 1 ? '0' + this._minute : this._minute);
     this.updateValue();
   }
 
@@ -175,8 +177,6 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   menuClosed() {
-    setTimeout(() => {
-      this.menuVisible = false;
-    }, 1000);
+    this.menuVisible = false;
   }
 }

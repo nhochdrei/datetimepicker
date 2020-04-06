@@ -1,0 +1,16 @@
+.element {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+.selected {
+    font-weight: 600;
+    cursor: default;
+}
+
+.time-list {
+    text-align: center;
+}

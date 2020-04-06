@@ -1,9 +1,0 @@
-<div class="grabbable" draggable="true" (dragover)="drag($event)" (dragstart)="dragStart($event)">
-  <div class="list-element" (click)="elementClicked($event)">{{(value - 3 * step +maximum) % maximum}}</div>
-  <div class="list-element" (click)="elementClicked($event)">{{(value - 2 * step +maximum) % maximum}}</div>
-  <div class="list-element" (click)="elementClicked($event)">{{(value - step + maximum) % maximum}}</div>
-  <div class="list-element selected-value">{{value}}</div>
-  <div class="list-element" (click)="elementClicked($event)">{{(value + 1 * step) % maximum}}</div>
-  <div class="list-element" (click)="elementClicked($event)">{{(value + 2 * step) % maximum}}</div>
-  <div class="list-element" (click)="elementClicked($event)">{{(value + 3 * step) % maximum}}</div>
-</div>

@@ -18,18 +18,14 @@
     overflow: hidden;
 }
 
-.modal-bottom {
-    width: 100%;
-    justify-content: space-around;
-}
-
-.time-list {
+.spinners {
     flex-direction: column;
     width: 50%;
 }
 
-.list-element:nth-child(4) {
-    font-weight: 600;
+.modal-bottom {
+    width: 100%;
+    justify-content: space-around;
 }
 
 .noselect {
