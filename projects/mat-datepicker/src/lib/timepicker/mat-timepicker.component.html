@@ -4,7 +4,7 @@
         <input #maskInput matInput placeholder="__:__" (input)="updateValue()" [disabled]="disabled" autocomplete="off"
             (click)="maskInputClicked()" (keydown.arrowup)="onArrowPressed($event, true)"
             (keydown.arrowdown)="onArrowPressed($event, false)">
-        <mat-icon matSuffix [matMenuTriggerFor]="menu" #trigger="matMenuTrigger" (menuOpened)="menuOpened()" (menuClosed)="menuClosed()">
+        <mat-icon matSuffix class="clock-icon" [matMenuTriggerFor]="menu" #trigger="matMenuTrigger" (menuOpened)="menuOpened()" (menuClosed)="menuClosed()">
             access_time</mat-icon>
     </mat-form-field>
 

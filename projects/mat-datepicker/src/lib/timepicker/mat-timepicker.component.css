@@ -2,8 +2,9 @@
     padding: 10px !important;
 }
 
-.menu-custom {
-    background-color: red;
+.clock-icon {
+    font-size: large;
+    opacity: 0.7;
 }
 
 .modal-content {
