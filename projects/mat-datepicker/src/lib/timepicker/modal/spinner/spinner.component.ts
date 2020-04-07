@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'lib-spinner',
@@ -38,14 +38,15 @@ export class SpinnerComponent implements OnInit {
     return minute < 0 ? '' : minute;
   }
 
+  @HostListener('wheel', ['$event'])
   onScroll(event) {
     event.preventDefault();
     event.stopPropagation();
 
     if (event.deltaY > 0) {
-      this.nextItem();
-    } else if (event.deltaY < 0) {
       this.prevItem();
+    } else if (event.deltaY < 0) {
+      this.nextItem();
     }
   }
 

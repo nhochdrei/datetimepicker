@@ -83,8 +83,6 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   sendTime() {
-    // this.hour = this._hour;
-    // this.minute = this._minute;
     this.value = (this._hour.toString().length === 1 ? '0' + this._hour : this._hour)
       + ':' + (this._minute.toString().length === 1 ? '0' + this._minute : this._minute);
     this.updateValue();
