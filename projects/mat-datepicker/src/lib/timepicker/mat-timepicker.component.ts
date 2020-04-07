@@ -4,6 +4,19 @@ import * as moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
 
+const pipe = (confirmedValue, config) => {
+  const rawValue = config.rawValue;
+  let result = rawValue.replace(/[-_]/g, '');
+  const pos = config.currentCaretPosition;
+
+  if (result.length < 6) {
+    return confirmedValue;
+  }
+
+  result = result.slice(0, pos) + result.slice(pos + 1);
+  return result;
+};
+
 @Component({
   selector: 'mat-n3-timepicker',
   templateUrl: './mat-timepicker.component.html',
@@ -73,7 +86,10 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
       this.maskInput.element.nativeElement.value = this.value;
       this.maskedInputController = textMask.maskInput({
         inputElement: this.maskInput.element.nativeElement,
-        mask: this.mask
+        mask: this.mask,
+        pipe,
+        guide: true,
+        keepCharPositions: true
       });
     });
   }
@@ -83,8 +99,8 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   sendTime() {
-    this.value = (this._hour.toString().length === 1 ? '0' + this._hour : this._hour)
-      + ':' + (this._minute.toString().length === 1 ? '0' + this._minute : this._minute);
+    this.value = (this._hour.toString().length === 1 ? '0' + this._hour : this._hour.toString().substring(0, 2))
+      + ':' + (this._minute.toString().length === 1 ? '0' + this._minute : this._minute.toString().substring(0, 2));
     this.updateValue();
   }
 
