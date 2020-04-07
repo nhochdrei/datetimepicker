@@ -8,7 +8,7 @@
             access_time</mat-icon>
     </mat-form-field>
 
-    <mat-menu #menu="matMenu" class="custom-menu-container" [hasBackdrop]="true" (click)="$event.stopPropagation()">
+    <mat-menu #menu="matMenu" [hasBackdrop]="true" (click)="$event.stopPropagation()" xPosition="before">
         <div class="modal-content">
             <div mat-dialog-content class="modal-upper noselect" *ngIf="menuVisible">
                 <lib-spinner class="spinners" [(value)]="hour" min="0" max="24" step="1"></lib-spinner>

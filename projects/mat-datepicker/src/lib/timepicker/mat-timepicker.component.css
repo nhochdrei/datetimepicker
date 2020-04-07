@@ -2,6 +2,10 @@
     padding: 10px !important;
 }
 
+.menu-custom {
+    background-color: red;
+}
+
 .modal-content {
     display: flex;
     justify-content: space-between;
