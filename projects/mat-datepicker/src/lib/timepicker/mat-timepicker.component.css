@@ -21,6 +21,7 @@
 .spinners {
     flex-direction: column;
     width: 50%;
+    margin: 5px;
 }
 
 .modal-bottom {

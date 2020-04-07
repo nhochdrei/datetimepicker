@@ -16,7 +16,7 @@ export class SpinnerComponent implements OnInit {
   _value: number;
 
   @Input()
-   set value(val) {
+  set value(val) {
     this._value = val;
   }
 
@@ -94,7 +94,7 @@ export class SpinnerComponent implements OnInit {
 
   generateValue(position): any {
     const item = (this.value - position * (+this.step) + (+this.max)) % (+this.max);
-    return item < 0 ? '' : item;
+    return item < 10 ? '0' + item : item;
   }
 
   clicked(v: number, event: Event) {
