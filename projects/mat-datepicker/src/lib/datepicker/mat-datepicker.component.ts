@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import * as moment from 'moment';
@@ -81,6 +81,27 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     } else {
       input.setSelectionRange(this.getPosition(text, '.', 2) + 1, text.length);
     }
+  }
+
+  @HostListener('wheel', ['$event'])
+  public onScroll(e) {
+    const input = this.maskInput.element.nativeElement;
+    const text: string = input.value;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+
+    const step = e.deltaY > 0 ? 1 : -1;
+    const isDays = text.indexOf('.') > input.selectionStart;
+    const isMonth = text.indexOf('.') < input.selectionStart && this.getPosition(text, '.', 2) >= input.selectionStart;
+    const isYear = isDays === false && isMonth === false;
+    let date: moment.Moment = moment(text, 'DD.MM.YYYY');
+
+    if (isDays) { date = date.add(step, 'day'); }
+    if (isMonth) { date = date.add(step, 'month'); }
+    if (isYear) { date = date.add(step, 'year'); }
+
+    this.changeInputValue(date, e, start, end);
+    this.propagateNewValue(date.toString(), e);
   }
 
   key(e) {
