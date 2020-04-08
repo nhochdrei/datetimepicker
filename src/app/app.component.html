@@ -1,8 +1,9 @@
 <form [formGroup]="form">
-    <!-- <mat-n3-datepicker label="Sitzungdatum"></mat-n3-datepicker> -->
     <mat-n3-timepicker label="Sitzungbeginn" formControlName="time"></mat-n3-timepicker>
 </form>
 
 <form [formGroup]="form">
     <mat-n3-datepicker label="Date 1" formControlName="time"></mat-n3-datepicker>
 </form>
+
+{{form.value.time}}

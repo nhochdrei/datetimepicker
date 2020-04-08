@@ -5,8 +5,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
 
 const pipe = (confirmedValue, config) => {
-  const rawValue = config.rawValue;
-  let result = rawValue.replace(/[-_]/g, '');
+  let result = config.rawValue.replace(/[._]/, '');
   const pos = config.currentCaretPosition;
 
   if (result.length < 6) {

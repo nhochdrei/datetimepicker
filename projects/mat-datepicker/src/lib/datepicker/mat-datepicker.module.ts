@@ -12,22 +12,16 @@ import { MY_DATE_FORMATS } from './date-format';
 import { MatDatepickerComponent } from './mat-datepicker.component';
 
 @NgModule({
-  exports: [
-    MatDatepickerModule,
-    MatInputModule,
-    MatIconModule
-  ]
-})
-class MaterialModule { }
-
-@NgModule({
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
-    MaterialModule,
     ReactiveFormsModule,
-    DeviceDetectorModule.forRoot()
+    DeviceDetectorModule.forRoot(),
+
+    MatDatepickerModule,
+    MatInputModule,
+    MatIconModule
   ],
   declarations: [MatDatepickerComponent],
   exports: [MatDatepickerComponent],

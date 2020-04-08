@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, forwardRef, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
 import * as moment from 'moment';
@@ -20,17 +20,22 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   @Output() dateChanged = new EventEmitter<Date>();
 
-  @ViewChild('input', { read: ViewContainerRef }) public input;
+  @ViewChild('maskInput', { read: ViewContainerRef }) public maskInput;
   mask = [/\d/, /\d/, '.', /\d/, /\d/, '.', /\d/, /\d/, /\d/, /\d/];
   maskedInputController;
 
   isDesktopDevice = false;
 
-  private _value = '';
+  private _value: Date;
   get value() { return this._value; }
-  set value(v: string) {
+  set value(v: Date) {
     if (v !== this._value) {
       this._value = v;
+
+      // if (this.maskInput) {
+      //   this.maskInput.element.nativeElement.value = v;
+      // }
+
       const date = moment(v).toDate(); // todo format berücksichtigen
       this.propagateChange(date);
       this.dateChanged.emit(date);
@@ -44,8 +49,10 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.maskedInputController = textMask.maskInput({
-        inputElement: this.input.element.nativeElement,
-        mask: this.mask
+        inputElement: this.maskInput.element.nativeElement,
+        mask: this.mask,
+        guide: true,
+        keepCharPositions: true
       });
     });
   }
@@ -59,10 +66,87 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     this.dateAdapter.setLocale('de');
   }
 
+  getPosition(string, subString, index) {
+    return string.split(subString, index).join(subString).length;
+  }
+
+  maskInputClicked() {
+    const input = this.maskInput.element.nativeElement;
+    const text: string = input.value;
+
+    if (text.indexOf('.') > input.selectionStart) {
+      input.setSelectionRange(0, text.indexOf('.'));
+    } else if (text.indexOf('.') < input.selectionStart && this.getPosition(text, '.', 2) >= input.selectionStart) {
+      input.setSelectionRange(text.indexOf('.') + 1, this.getPosition(text, '.', 2));
+    } else {
+      input.setSelectionRange(this.getPosition(text, '.', 2) + 1, text.length);
+    }
+  }
+
+  key(e) {
+    const input = this.maskInput.element.nativeElement;
+    const text: string = input.value;
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+
+    const isDays = text.indexOf('.') > input.selectionStart;
+    const isMonth = text.indexOf('.') < input.selectionStart && this.getPosition(text, '.', 2) >= input.selectionStart;
+    const isYear = isDays === false && isMonth === false;
+    let date: moment.Moment = moment(text, 'DD.MM.YYYY');
+
+    if (e.code === 'ArrowUp') {
+      if (isDays) { date = date.add(1, 'day'); }
+      if (isMonth) { date = date.add(1, 'month'); }
+      if (isYear) { date = date.add(1, 'year'); }
+
+      this.changeInputValue(date, e, start, end);
+      this.propagateNewValue(date.toString(), e);
+      return false;
+
+    } else if (e.code === 'ArrowDown') {
+      if (isDays) { date = date.subtract(1, 'day'); }
+      if (isMonth) { date = date.subtract(1, 'month'); }
+      if (isYear) { date = date.subtract(1, 'year'); }
+
+      this.changeInputValue(date, e, start, end);
+      this.propagateNewValue(date.toString(), e);
+      return false;
+
+    } else if ('0123456789'.includes(e.key)) {
+      let p = e.target.selectionStart;
+      let next = e.target.value.slice(p, p + 1);
+      if (next === '.') {
+        p++;
+        next = e.target.value.slice(p, p + 1);
+      }
+
+      if (next !== '' && '0123456789'.includes(next) && e.target.selectionStart === e.target.selectionEnd) {
+        e.target.value = e.target.value.slice(0, p) + e.key + e.target.value.slice(p + 1);
+        e.target.selectionStart = e.target.selectionEnd = p + 1;
+
+        this.propagateNewValue(date.toString(), e);
+        return false;
+      }
+    }
+
+  }
+
+  changeInputValue(date: moment.Moment, e: any, start: number, end: number) {
+    e.target.value = date.format('DD.MM.YYYY');
+    e.target.selectionStart = start;
+    e.target.selectionEnd = end;
+  }
+
+  propagateNewValue(value: string, e: any) {
+    const date = moment(value).toDate(); // todo format berücksichtigen
+    this.propagateChange(date);
+    this.dateChanged.emit(date);
+  }
+
   private propagateChange = (_: any) => { };
 
   writeValue(obj: any): void {
-    this.value = moment(obj).format('DD.MM.YYYY');
+    this.value = obj;
   }
   registerOnChange(fn: any): void {
     this.propagateChange = fn;
@@ -71,12 +155,5 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
   setDisabledState?(isDisabled: boolean): void {
     // throw new Error('Method not implemented.');
-  }
-
-  @HostListener('click', ['$event'])
-  onClick(domElement) {
-    if (domElement.toElement.className.includes('mat-input-element')) {
-      domElement.target.select();
-    }
   }
 }

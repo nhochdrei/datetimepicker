@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDatepickerN3Module, MatTimepickerN3Module } from 'projects/mat-datepicker/src/public-api';
@@ -14,10 +14,11 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     MatTimepickerN3Module,
     MatDatepickerN3Module,
-    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
