@@ -1,9 +1,9 @@
 <form [formGroup]="form">
     <mat-n3-timepicker label="Sitzungbeginn" formControlName="time"></mat-n3-timepicker>
+    <div *ngIf="form.get('time').hasError('invalidTime')">Time error</div>
 </form>
 
 <form [formGroup]="form">
-    <mat-n3-datepicker label="Date 1" formControlName="time"></mat-n3-datepicker>
+    <mat-n3-datepicker label="Date 1" formControlName="date"></mat-n3-datepicker>
+    <div *ngIf="form.get('date').hasError('invalidDate')">Date error</div>
 </form>
-
-{{form.value.time}}

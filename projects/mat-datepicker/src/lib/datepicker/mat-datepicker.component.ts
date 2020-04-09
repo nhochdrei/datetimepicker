@@ -32,11 +32,7 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     if (v !== this._value) {
       this._value = v;
 
-      // if (this.maskInput) {
-      //   this.maskInput.element.nativeElement.value = v;
-      // }
-
-      const date = moment(v).toDate(); // todo format berücksichtigen
+      const date = moment(v).toDate();
       this.propagateChange(date);
       this.dateChanged.emit(date);
     }
@@ -159,7 +155,7 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   propagateNewValue(value: string, e: any) {
-    const date = moment(value).toDate(); // todo format berücksichtigen
+    const date = moment(value).toDate();
     this.propagateChange(date);
     this.dateChanged.emit(date);
   }
@@ -169,11 +165,14 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   writeValue(obj: any): void {
     this.value = obj;
   }
+
   registerOnChange(fn: any): void {
     this.propagateChange = fn;
   }
+
   registerOnTouched(fn: any): void {
   }
+
   setDisabledState?(isDisabled: boolean): void {
     // throw new Error('Method not implemented.');
   }

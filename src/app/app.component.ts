@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
+import { DateValidator } from 'projects/mat-datepicker/src/lib/validators/datepicker-validator';
+import { TimeValidator } from 'projects/mat-datepicker/src/lib/validators/timepicker-validators';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +9,13 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  form = new FormGroup({
-    time: new FormControl(new Date())
+  form = this.fb.group({
+    time: [new Date(), [TimeValidator]],
+    date: [new Date(), [DateValidator]]
   });
+
+  get f() { return this.form.controls; }
+
+  constructor(private fb: FormBuilder) { }
 
 }
