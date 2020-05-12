@@ -1,5 +1,5 @@
 import { AbstractControl } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 
 export function TimeValidator(control: AbstractControl) {
     const time = moment(control.value).format('HH:mm');

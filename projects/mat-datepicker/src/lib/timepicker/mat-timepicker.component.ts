@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
 
@@ -130,7 +130,8 @@ export class MatTimepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   @HostListener('wheel', ['$event'])
-  public onScroll(event) {
+  onScroll(event) {
+    event.preventDefault();
     const input = this.maskInput.element.nativeElement;
     const start = input.selectionStart;
     const end = input.selectionEnd;

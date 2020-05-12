@@ -5,5 +5,8 @@
     "@angular/common": "^9.0.6",
     "@angular/core": "^9.0.6",
     "tslib": "^1.10.0"
+  },
+  "publishConfig": {
+    "registry": "https://nexus_user:0jywi0RZpeXwKmwkAKBb@nexus.nhochdrei.de/repository/npm-nhochdrei/"
   }
 }

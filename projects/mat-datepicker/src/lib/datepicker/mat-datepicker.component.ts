@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, EventEmitter, forwardRef, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DateAdapter } from '@angular/material/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import * as textMask from 'vanilla-text-mask/dist/vanillaTextMask.js';
 
@@ -81,6 +81,7 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
 
   @HostListener('wheel', ['$event'])
   public onScroll(e) {
+    e.preventDefault();
     const input = this.maskInput.element.nativeElement;
     const text: string = input.value;
     const start = input.selectionStart;
@@ -97,7 +98,6 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     if (isYear) { date = date.add(step, 'year'); }
 
     this.changeInputValue(date, e, start, end);
-    this.propagateNewValue(date.toString(), e);
   }
 
   key(e) {
@@ -117,7 +117,6 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
       if (isYear) { date = date.add(1, 'year'); }
 
       this.changeInputValue(date, e, start, end);
-      this.propagateNewValue(date.toString(), e);
       return false;
 
     } else if (e.code === 'ArrowDown') {
@@ -126,7 +125,6 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
       if (isYear) { date = date.subtract(1, 'year'); }
 
       this.changeInputValue(date, e, start, end);
-      this.propagateNewValue(date.toString(), e);
       return false;
 
     } else if ('0123456789'.includes(e.key)) {
@@ -152,10 +150,12 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     e.target.value = date.format('DD.MM.YYYY');
     e.target.selectionStart = start;
     e.target.selectionEnd = end;
+    this.propagateNewValue(date.toString(), e);
   }
 
   propagateNewValue(value: string, e: any) {
     const date = moment(value).toDate();
+    this.value = date;
     this.propagateChange(date);
     this.dateChanged.emit(date);
   }

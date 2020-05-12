@@ -4,6 +4,10 @@
 </form>
 
 <form [formGroup]="form">
-    <mat-n3-datepicker label="Date 1" formControlName="date"></mat-n3-datepicker>
+    <mat-n3-datepicker label="First date" formControlName="date"></mat-n3-datepicker>
     <div *ngIf="form.get('date').hasError('invalidDate')">Date error</div>
 </form>
+
+{{form.value.time}}
+<br>
+{{form.value.date}}
