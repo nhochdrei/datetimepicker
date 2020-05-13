@@ -8,6 +8,10 @@
     <div *ngIf="form.get('date').hasError('invalidDate')">Date error</div>
 </form>
 
-{{form.value.time}}
+<mat-n3-datepicker label="First date" [(ngModel)]="date"></mat-n3-datepicker>
+
+{{type(form.value.time)}}
 <br>
 {{form.value.date}}
+<br>
+{{date}}

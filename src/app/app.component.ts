@@ -14,8 +14,15 @@ export class AppComponent {
     date: [new Date(), [DateValidator]]
   });
 
+  date = new Date();
+
   get f() { return this.form.controls; }
 
   constructor(private fb: FormBuilder) { }
+
+
+  type(t) {
+    return t;
+  }
 
 }

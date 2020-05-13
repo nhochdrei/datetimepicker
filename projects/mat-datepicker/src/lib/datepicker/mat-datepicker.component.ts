@@ -139,7 +139,7 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
         e.target.value = e.target.value.slice(0, p) + e.key + e.target.value.slice(p + 1);
         e.target.selectionStart = e.target.selectionEnd = p + 1;
 
-        this.propagateNewValue(date.toString(), e);
+        this.propagateNewValue(date.toDate(), e);
         return false;
       }
     }
@@ -150,14 +150,14 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
     e.target.value = date.format('DD.MM.YYYY');
     e.target.selectionStart = start;
     e.target.selectionEnd = end;
-    this.propagateNewValue(date.toString(), e);
+    this.propagateNewValue(date.toDate(), e);
   }
 
-  propagateNewValue(value: string, e: any) {
-    const date = moment(value).toDate();
-    this.value = date;
-    this.propagateChange(date);
-    this.dateChanged.emit(date);
+  propagateNewValue(value: Date, e: any) {
+    console.log(value);
+    this.value = value;
+    this.propagateChange(value);
+    this.dateChanged.emit(value);
   }
 
   private propagateChange = (_: any) => { };
