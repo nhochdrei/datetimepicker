@@ -143,7 +143,6 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
         return false;
       }
     }
-
   }
 
   changeInputValue(date: moment.Moment, e: any, start: number, end: number) {
@@ -154,7 +153,6 @@ export class MatDatepickerComponent implements OnInit, AfterViewInit, OnDestroy,
   }
 
   propagateNewValue(value: Date, e: any) {
-    console.log(value);
     this.value = value;
     this.propagateChange(value);
     this.dateChanged.emit(value);
