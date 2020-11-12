@@ -24,7 +24,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     const expectedDate = new Date('Thu Apr 09 2020 12:37:52 GMT+0200 (Mitteleuropäische Sommerzeit)');
-    console.log('what am I doing wrong', app.form.controls.time.value, expectedDate);
   });
 
   it('should render title', () => {

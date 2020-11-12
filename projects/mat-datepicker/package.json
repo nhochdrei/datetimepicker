@@ -4,15 +4,14 @@
   "peerDependencies": {
     "@angular/common": "^9.0.6",
     "@angular/core": "^9.0.6",
-    "moment": "^2.24.0",
-    "ngx-device-detector": "^1.4.0",
-    "ngx-drag-scroll": "^8.0.0-beta.2",
-    "ngx-take-until-destroy": "^5.4.0",
     "rxjs": "~6.5.4",
-    "vanilla-text-mask": "^5.1.1",
     "tslib": "^1.10.0"
   },
-  "publishConfig": {
-    "registry": "https://nexus_user:0jywi0RZpeXwKmwkAKBb@nexus.nhochdrei.de/repository/npm-nhochdrei/"
+  "dependencies": {
+    "ngx-device-detector": "^1.4.0",
+    "moment": "^2.24.0",
+    "ngx-drag-scroll": "^8.0.0-beta.2",
+    "ngx-take-until-destroy": "^5.4.0",
+    "vanilla-text-mask": "^5.1.1"
   }
 }
